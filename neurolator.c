@@ -22,7 +22,8 @@
 int main(int argc, char **argv)
 {
 	if(argc == 1){
-		printf("neurolator <filename> <channel=0> <format=0 (0->column of numbers, 1->max coll)>\n");
+		printf("neurolator <filename> <channel=0> <format=0 (0->column of numbers, 1->max coll, 2->column of values)>\n");
+		printf("\nto write an aiff file, use ffmpeg like this: neurolator <filename> <channel> 1 | ffmpeg -y -f s16le -ar 44100 -ac 1 -i - <outfilename>.aiff\n");
 		exit(0);
 	}
 	char *filename = argv[1];
