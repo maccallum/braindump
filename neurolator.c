@@ -22,8 +22,8 @@
 int main(int argc, char **argv)
 {
 	if(argc == 1){
-		printf("neurolator <filename> <channel=0> <format=0 (0->column of numbers, 1->max coll, 2->column of values)>\n");
-		printf("\nto write an aiff file, use ffmpeg like this: neurolator <filename> <channel> 1 | ffmpeg -y -f s16le -ar 44100 -ac 1 -i - <outfilename>.aiff\n");
+		printf("neurolator <filename> <channel=0> <nchannels=64> <format=0 (0->column of binary values, 1->max coll, 2->column of text values)>\n");
+		printf("\nto write an aiff file, use ffmpeg like this: neurolator <filename> <channel> <nchannels> 0 | ffmpeg -y -f s16le -ar 44100 -ac 1 -i - <outfilename>.aiff\n");
 		exit(0);
 	}
 	char *filename = argv[1];
@@ -32,10 +32,15 @@ int main(int argc, char **argv)
 		char *endp = NULL;
 		channel = strtol(argv[2], &endp, 0);
 	}
-	int ofmt = 0;
+	int nchannels = DEF_NCHANNELS;
 	if(argc > 3){
 		char *endp = NULL;
-		ofmt = strtol(argv[3], &endp, 0);
+		nchannels = strtol(argv[3], &endp, 0);
+	}
+	int ofmt = 0;
+	if(argc > 4){
+		char *endp = NULL;
+		ofmt = strtol(argv[4], &endp, 0);
 	}
 
 	FILE *fp = fopen(filename, "rb");
@@ -53,17 +58,17 @@ int main(int argc, char **argv)
 	
 	switch(ofmt){
 	case 0: // binary output for ffmpeg or something
-		for(int i = channel; i < sz; i += DEF_NCHANNELS){
+		for(int i = channel; i < sz; i += nchannels){
 			fwrite((void *)(buf + i), 2, 1, stdout);
 		}
 		break;
 	case 1: // max coll
-		for(int i = channel, j = 0; i < sz; i += DEF_NCHANNELS, j++){
+		for(int i = channel, j = 0; i < sz; i += nchannels, j++){
 			printf("%d, %d;\n", j, buf[i]);
 		}
 		break;
 	case 2: // numbers
-		for(int i = channel; i < sz; i += DEF_NCHANNELS){
+		for(int i = channel; i < sz; i += nchannels){
 			printf("%d\n", buf[i]);
 		}
 		break;
