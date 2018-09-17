@@ -22,8 +22,8 @@
 int main(int argc, char **argv)
 {
 	if(argc == 1){
-		printf("neurolator <filename> <channel=0> <nchannels=64> <format=0 (0->column of binary values, 1->max coll, 2->column of text values)>\n");
-		printf("\nto write an aiff file, use ffmpeg like this: neurolator <filename> <channel> <nchannels> 0 | ffmpeg -y -f s16le -ar 44100 -ac 1 -i - <outfilename>.aiff\n");
+		printf("braindump <filename> <channel=0> <nchannels=64> <format=0 (0->column of binary values, 1->max coll, 2->column of text values)>\n");
+		printf("\nto write an aiff file, use ffmpeg like this: braindump <filename> <channel> <nchannels> 0 | ffmpeg -y -f s16le -ar 44100 -ac 1 -i - <outfilename>.aiff\n");
 		exit(0);
 	}
 	char *filename = argv[1];
